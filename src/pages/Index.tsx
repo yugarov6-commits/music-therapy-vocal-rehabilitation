@@ -918,6 +918,149 @@ function ProfileSection() {
   );
 }
 
+// ─── Onboarding ──────────────────────────────────────────────────────────────
+
+const ONBOARDING_STEPS = [
+  {
+    icon: '🎵',
+    color: 'hsl(175, 55%, 45%)',
+    title: 'Музыкотерапия',
+    desc: 'Программа подбирает треки под ваше текущее настроение — классику, эмбиент или неоклассику — чтобы мягко скорректировать эмоциональный фон.',
+  },
+  {
+    icon: '🌬',
+    color: 'hsl(270, 50%, 60%)',
+    title: 'Вокальная реабилитация',
+    desc: 'Дыхательные упражнения на диафрагму и контроль выдоха, распевки для связок и артикуляция — шаг за шагом с инструкцией и таймером.',
+  },
+  {
+    icon: '🎙',
+    color: 'hsl(45, 70%, 65%)',
+    title: 'Объективный контроль',
+    desc: 'Если есть микрофон — приложение замеряет громкость в реальном времени и предупреждает о слишком тихом или форсированном голосе.',
+  },
+  {
+    icon: '📓',
+    color: 'hsl(245, 55%, 65%)',
+    title: 'Дневник прогресса',
+    desc: 'Каждая сессия сохраняется: эмоция, упражнение, длительность и уровень громкости. Наблюдайте, как голос меняется день за днём.',
+  },
+];
+
+function Onboarding({ onDone }: { onDone: () => void }) {
+  const [step, setStep] = useState(0);
+  const current = ONBOARDING_STEPS[step];
+  const isLast = step === ONBOARDING_STEPS.length - 1;
+
+  return (
+    <div
+      className="fixed inset-0 z-[100] flex flex-col items-center justify-center px-6"
+      style={{ background: 'hsl(240, 20%, 5%)' }}
+    >
+      {/* Background glow */}
+      <div
+        className="absolute inset-0 pointer-events-none transition-all duration-700"
+        style={{
+          background: `radial-gradient(ellipse at 50% 60%, ${current.color}18 0%, transparent 65%)`,
+        }}
+      />
+
+      {/* Floating particles */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {[...Array(6)].map((_, i) => (
+          <div
+            key={i}
+            className="animate-float absolute rounded-full"
+            style={{
+              width: `${4 + (i % 3) * 3}px`,
+              height: `${4 + (i % 3) * 3}px`,
+              left: `${15 + i * 14}%`,
+              top: `${15 + (i % 3) * 20}%`,
+              background: current.color,
+              opacity: 0.25,
+              animationDelay: `${i * 0.9}s`,
+              animationDuration: `${5 + i * 0.6}s`,
+              transition: 'background 0.5s ease',
+            }}
+          />
+        ))}
+      </div>
+
+      <div className="relative z-10 w-full max-w-sm flex flex-col items-center text-center">
+        {/* Logo */}
+        <div className="mb-12 flex items-center gap-2 opacity-60">
+          <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, hsl(270,50%,40%), hsl(45,70%,55%))' }}>
+            <span style={{ fontSize: '11px' }}>♪</span>
+          </div>
+          <span className="font-display text-sm tracking-widest shimmer-text">Резонанс</span>
+        </div>
+
+        {/* Icon */}
+        <div
+          className="w-28 h-28 rounded-3xl flex items-center justify-center mb-8 transition-all duration-500"
+          style={{
+            background: `${current.color}18`,
+            border: `1.5px solid ${current.color}40`,
+            boxShadow: `0 0 40px ${current.color}25`,
+          }}
+        >
+          <span className="transition-all duration-300" style={{ fontSize: '52px' }}>{current.icon}</span>
+        </div>
+
+        {/* Text */}
+        <h2
+          className="font-display text-3xl font-light mb-4 transition-all duration-300"
+          style={{ color: 'hsl(45, 30%, 92%)' }}
+        >
+          {current.title}
+        </h2>
+        <p
+          className="font-body text-sm leading-relaxed mb-10 transition-all duration-300"
+          style={{ color: 'hsl(240, 10%, 58%)' }}
+        >
+          {current.desc}
+        </p>
+
+        {/* Step dots */}
+        <div className="flex gap-2 mb-8">
+          {ONBOARDING_STEPS.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => setStep(i)}
+              className="rounded-full transition-all duration-300"
+              style={{
+                width: i === step ? '24px' : '6px',
+                height: '6px',
+                background: i === step ? current.color : 'hsl(240, 15%, 22%)',
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Buttons */}
+        <div className="w-full flex flex-col gap-3">
+          <button
+            onClick={() => isLast ? onDone() : setStep(s => s + 1)}
+            className="w-full py-4 rounded-2xl font-body font-medium text-sm transition-all duration-200 hover:opacity-90 active:scale-[0.98]"
+            style={{ background: current.color, color: 'hsl(240, 20%, 6%)' }}
+          >
+            {isLast ? 'Начать практику' : 'Далее'}
+          </button>
+          {!isLast && (
+            <button
+              onClick={onDone}
+              className="w-full py-3 font-body text-sm transition-opacity hover:opacity-70"
+              style={{ color: 'hsl(240, 10%, 40%)' }}
+            >
+              Пропустить
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 // ─── Navigation ───────────────────────────────────────────────────────────────
 
 const SECTIONS = [
@@ -931,9 +1074,18 @@ const SECTIONS = [
 
 export default function Index() {
   const [active, setActive] = useState<string>('mood');
+  const [showOnboarding, setShowOnboarding] = useState(() => {
+    return !localStorage.getItem('resonance_onboarded');
+  });
+
+  const handleOnboardingDone = () => {
+    localStorage.setItem('resonance_onboarded', '1');
+    setShowOnboarding(false);
+  };
 
   return (
     <div className="min-h-screen" style={{ background: 'hsl(240, 20%, 6%)' }}>
+      {showOnboarding && <Onboarding onDone={handleOnboardingDone} />}
       <header
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4"
         style={{ background: 'hsl(240, 20%, 6%, 0.85)', backdropFilter: 'blur(20px)', borderBottom: '1px solid hsl(240, 15%, 14%)' }}

@@ -1485,11 +1485,12 @@ function Onboarding({ onDone }: { onDone: () => void }) {
 
       <div className="relative z-10 w-full max-w-sm flex flex-col items-center text-center">
         {/* Logo */}
-        <div className="mb-12 flex items-center gap-2 opacity-60">
-          <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, hsl(270,50%,40%), hsl(45,70%,55%))' }}>
-            <span style={{ fontSize: '11px' }}>♪</span>
-          </div>
-          <span className="font-display text-sm tracking-widest shimmer-text">Резонанс</span>
+        <div className="mb-12 opacity-70">
+          <img
+            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/bucket/cd117cd2-1512-4349-a761-3bfab1887fc2.jpg"
+            alt="Артманько — Театр Рока"
+            style={{ height: '32px', width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
+          />
         </div>
 
         {/* Icon */}
@@ -1587,11 +1588,12 @@ export default function Index() {
         className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4"
         style={{ background: 'hsl(240, 20%, 6%, 0.85)', backdropFilter: 'blur(20px)', borderBottom: '1px solid hsl(240, 15%, 14%)' }}
       >
-        <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'linear-gradient(135deg, hsl(270,50%,40%), hsl(45,70%,55%))' }}>
-            <span style={{ fontSize: '14px' }}>♪</span>
-          </div>
-          <span className="font-display text-xl tracking-wide shimmer-text">Резонанс</span>
+        <div className="flex items-center">
+          <img
+            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/bucket/cd117cd2-1512-4349-a761-3bfab1887fc2.jpg"
+            alt="Артманько — Театр Рока"
+            style={{ height: '36px', width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
+          />
         </div>
         <div className="hidden md:flex items-center gap-1 p-1 rounded-2xl" style={{ background: 'hsl(240, 18%, 10%)' }}>
           {SECTIONS.map((s) => (

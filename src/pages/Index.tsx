@@ -32,6 +32,10 @@ type Exercise = {
   icon: string;
   steps: string[];
   color: string;
+  warning?: string;
+  subExercises?: { name: string; desc: string }[];
+  forbidden?: string[];
+  regime?: string;
 };
 
 type DiaryEntry = {
@@ -267,6 +271,55 @@ const EXERCISES: Exercise[] = [
       'Слоговая распевка: «ми-мэ-ма-мо-му» — пропойте по полутонам вверх и вниз, удерживая каждый звук',
       'Гудение (мычание): закрытым ртом мычите простую мелодию, ощущая вибрацию в скулах, лбу и губах',
     ]
+  },
+  {
+    id: 'rehab',
+    title: 'Реабилитация голоса',
+    subtitle: 'Комплекс «Мягкий шаг»',
+    duration: 300,
+    icon: 'HeartPulse',
+    color: 'hsl(340, 60%, 55%)',
+    warning: 'Перед началом ОБЯЗАТЕЛЬНО спросите у врача или фониатра, можно ли вам сейчас нагружать складки. Никакой боли, дискомфорта и шёпота — шёпот вреднее крика.',
+    steps: [
+      'Прочитайте описание каждого упражнения ниже',
+      'Выполняйте строго в указанном порядке',
+      'При малейшей боли или охриплости — остановитесь',
+      'Режим: 3–5 минут утром, 3–5 минут вечером',
+      'Если осипли или устали — день отдыха',
+    ],
+    subExercises: [
+      {
+        name: '1. «Согрей ладошки» — дыхание',
+        desc: 'Сядьте ровно. Вдох носом (живот надулся), выдох ртом — медленно, будто греете замёрзшие руки, губы трубочкой. Выдох длиннее вдоха. 5 повторений. Снимает спазм гортани при стрессе.',
+      },
+      {
+        name: '2. «Зевающее мычание» — снятие стрессового зажима',
+        desc: 'Откройте рот как для зевка. На спокойном выдохе помычите «Мммммм» с закрытым ртом. Губы сомкнуты, челюсть расслаблена. Чувствуете вибрацию в груди? Это возвращает голос без крика.',
+      },
+      {
+        name: '3. «Трубочка — улыбка» — после инсульта',
+        desc: 'Вытяните губы трубочкой (без звука), затем широко улыбнитесь. 5–6 раз. Потом добавьте на выдохе: «Ууууу» (трубочка) → «Иииии» (улыбка). Оживляет артикуляцию.',
+      },
+      {
+        name: '4. «Скользящая свечка» — после операции на щитовидной железе',
+        desc: '«Свечка близко» — тихо и долго: «Ффффф». «Свечка далеко» — сильнее и короче: «Фф!». «Три свечки» — прерывисто: «Фф! Фф! Фф!». Мягко тренирует смыкание складок без крика.',
+      },
+      {
+        name: '5. «Струна и бархат» — после операций на складках',
+        desc: 'Только через месяц после снятия швов, с разрешения врача. Гласная «А» или «О» — сначала тонким высоким голосом (2 сек), затем тем же выдохом — низким грудным (2 сек). Без усилий.',
+      },
+      {
+        name: '6. «Капельки» — после длительного ларингита',
+        desc: 'Постучите кончиками пальцев по скулам, лбу, шее (легко). Затем на выдохе: «Хмммм… Хнннн… Хмммм…» — еле слышно, как детское бормотание. Убирает остаточную сухость и спазм.',
+      },
+    ],
+    forbidden: [
+      'Шептать — это как кричать связанными шнурками',
+      'Кашлять с силой — лучше тихонько «кх-кх» с закрытым ртом',
+      'Пить ледяное или очень горячее',
+      'Проверять голос пением вне занятий',
+    ],
+    regime: 'Голос любит не тренировки, а спокойное и сытое тело: влажность 60%, тёплая вода, сон.',
   },
 ];
 
@@ -909,7 +962,7 @@ function ExercisesSection() {
               >
                 <div className="flex items-start gap-4">
                   <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: `${ex.color}20` }}>
-                    <Icon name={ex.icon as 'Wind' | 'Mic' | 'MessageCircle' | 'Radio'} size={22} style={{ color: ex.color }} />
+                    <Icon name={ex.icon as 'Wind' | 'Mic' | 'MessageCircle' | 'Radio' | 'HeartPulse'} size={22} style={{ color: ex.color }} />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-display text-xl font-medium mb-1" style={{ color: 'hsl(45, 20%, 88%)' }}>{ex.title}</h3>
@@ -937,7 +990,7 @@ function ExercisesSection() {
             <div className="rounded-3xl border p-8" style={{ background: 'hsl(240, 18%, 9%)', borderColor: 'hsl(240, 15%, 18%)' }}>
               <div className="flex items-center gap-4 mb-8">
                 <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: `${activeEx.color}20` }}>
-                  <Icon name={activeEx.icon as 'Wind' | 'Mic' | 'MessageCircle' | 'Radio'} size={26} style={{ color: activeEx.color }} />
+                  <Icon name={activeEx.icon as 'Wind' | 'Mic' | 'MessageCircle' | 'Radio' | 'HeartPulse'} size={26} style={{ color: activeEx.color }} />
                 </div>
                 <div>
                   <h3 className="font-display text-3xl font-light" style={{ color: 'hsl(45, 30%, 90%)' }}>{activeEx.title}</h3>
@@ -983,8 +1036,18 @@ function ExercisesSection() {
                 </div>
               )}
 
+              {/* Warning */}
+              {activeEx.warning && (
+                <div className="mb-6 p-4 rounded-2xl flex items-start gap-3" style={{ background: 'hsl(340, 60%, 15%, 0.5)', border: '1px solid hsl(340, 60%, 35%, 0.5)' }}>
+                  <Icon name="ShieldAlert" size={18} className="flex-shrink-0 mt-0.5" style={{ color: 'hsl(340, 60%, 65%)' }} />
+                  <p className="text-sm font-body leading-relaxed" style={{ color: 'hsl(340, 40%, 75%)' }}>{activeEx.warning}</p>
+                </div>
+              )}
+
               <div className="mb-8">
-                <p className="text-xs tracking-widest uppercase mb-3 font-body" style={{ color: 'hsl(240, 10%, 45%)' }}>Техника</p>
+                <p className="text-xs tracking-widest uppercase mb-3 font-body" style={{ color: 'hsl(240, 10%, 45%)' }}>
+                  {activeEx.subExercises ? 'Правила выполнения' : 'Техника'}
+                </p>
                 <div className="flex flex-col gap-2">
                   {activeEx.steps.map((s, i) => (
                     <div
@@ -1007,6 +1070,44 @@ function ExercisesSection() {
                   ))}
                 </div>
               </div>
+
+              {/* Sub-exercises */}
+              {activeEx.subExercises && (
+                <div className="mb-8">
+                  <p className="text-xs tracking-widest uppercase mb-4 font-body" style={{ color: 'hsl(240, 10%, 45%)' }}>Комплекс упражнений</p>
+                  <div className="flex flex-col gap-3">
+                    {activeEx.subExercises.map((sub, i) => (
+                      <div key={i} className="rounded-2xl p-4" style={{ background: 'hsl(240, 20%, 7%)', border: '1px solid hsl(240, 15%, 15%)' }}>
+                        <p className="font-body font-medium text-sm mb-2" style={{ color: activeEx.color }}>{sub.name}</p>
+                        <p className="font-body text-sm leading-relaxed" style={{ color: 'hsl(240, 10%, 60%)' }}>{sub.desc}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Forbidden */}
+              {activeEx.forbidden && (
+                <div className="mb-6 rounded-2xl p-4" style={{ background: 'hsl(240, 20%, 7%)', border: '1px solid hsl(240, 15%, 15%)' }}>
+                  <p className="text-xs tracking-widest uppercase mb-3 font-body" style={{ color: 'hsl(0, 60%, 55%)' }}>Нельзя</p>
+                  <div className="flex flex-col gap-2">
+                    {activeEx.forbidden.map((f, i) => (
+                      <div key={i} className="flex items-start gap-2">
+                        <span style={{ color: 'hsl(0, 60%, 55%)', fontSize: '12px', marginTop: '2px', flexShrink: 0 }}>✕</span>
+                        <p className="text-sm font-body leading-relaxed" style={{ color: 'hsl(240, 10%, 55%)' }}>{f}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Regime */}
+              {activeEx.regime && (
+                <div className="mb-6 p-4 rounded-2xl flex items-start gap-3" style={{ background: `${activeEx.color}10`, border: `1px solid ${activeEx.color}25` }}>
+                  <Icon name="Leaf" size={16} className="flex-shrink-0 mt-0.5" style={{ color: activeEx.color }} />
+                  <p className="text-sm font-body leading-relaxed" style={{ color: 'hsl(240, 10%, 60%)' }}>{activeEx.regime}</p>
+                </div>
+              )}
 
               <button
                 onClick={toggleTimer}

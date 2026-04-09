@@ -681,9 +681,34 @@ function MoodSection() {
                   </div>
                 ))}
               </div>
-              <p className="text-xs font-body mt-3 leading-relaxed" style={{ color: 'hsl(240, 10%, 35%)' }}>
-                Найдите трек → скачайте MP3 через любой YouTube-конвертер → загрузите ниже
-              </p>
+              {/* Download instruction */}
+              <div className="mt-4 rounded-2xl p-4" style={{ background: 'hsl(240, 18%, 8%)', border: '1px solid hsl(240, 15%, 16%)' }}>
+                <p className="text-xs font-body font-medium mb-3" style={{ color: 'hsl(45, 20%, 70%)' }}>
+                  Как скачать трек
+                </p>
+                <div className="flex flex-col gap-2.5">
+                  {[
+                    { step: '1', text: 'Нажмите «Найти» — откроется YouTube с нужным треком', icon: 'Search' },
+                    { step: '2', text: 'Скопируйте ссылку на видео из адресной строки', icon: 'Link' },
+                    { step: '3', text: 'Откройте yt1s.com или y2mate.com, вставьте ссылку', icon: 'ExternalLink' },
+                    { step: '4', text: 'Выберите формат MP3 и скачайте файл', icon: 'Download' },
+                    { step: '5', text: 'Нажмите «Загрузить трек» ниже и выберите скачанный файл', icon: 'Upload' },
+                  ].map(({ step, text, icon }) => (
+                    <div key={step} className="flex items-start gap-3">
+                      <div
+                        className="w-5 h-5 rounded-full flex-shrink-0 flex items-center justify-center text-[10px] font-body mt-0.5"
+                        style={{ background: `${selected.color}25`, color: selected.color }}
+                      >
+                        {step}
+                      </div>
+                      <div className="flex items-start gap-2 flex-1">
+                        <Icon name={icon as 'Search' | 'Link' | 'ExternalLink' | 'Download' | 'Upload'} size={12} className="mt-0.5 flex-shrink-0" style={{ color: 'hsl(240, 10%, 40%)' }} />
+                        <p className="text-xs font-body leading-relaxed" style={{ color: 'hsl(240, 10%, 50%)' }}>{text}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
             </div>
 
             {/* Upload zone */}

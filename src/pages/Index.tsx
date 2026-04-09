@@ -212,7 +212,7 @@ const EXERCISES: Exercise[] = [
   },
   {
     id: 'warmup',
-    title: 'Распевка складок',
+    title: 'Разогрев голосовых складок',
     subtitle: 'Разогрев и эластичность',
     duration: 240,
     icon: 'Mic',

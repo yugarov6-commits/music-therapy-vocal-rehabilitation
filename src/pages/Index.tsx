@@ -493,21 +493,33 @@ function MoodSection() {
     setUploading(true);
     setUploadError(null);
     try {
-      const buffer = await file.arrayBuffer();
-      const b64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+      const b64 = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => {
+          const result = reader.result as string;
+          resolve(result.split(',')[1]);
+        };
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
       const res = await fetch(TRACKS_URL, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ filename: file.name, data: b64, mood: selected.id }),
       });
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}));
+        setUploadError(err.error || `Ошибка сервера: ${res.status}`);
+        return;
+      }
       const data = await res.json();
       if (data.url) {
         setUploadedTracks(prev => [...prev, { key: data.key, name: data.name, url: data.url, size: file.size }]);
       } else {
-        setUploadError('Ошибка загрузки');
+        setUploadError(data.error || 'Ошибка загрузки');
       }
     } catch {
-      setUploadError('Ошибка загрузки');
+      setUploadError('Не удалось загрузить файл. Попробуйте ещё раз.');
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = '';

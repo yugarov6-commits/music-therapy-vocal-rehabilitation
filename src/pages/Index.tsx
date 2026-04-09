@@ -120,6 +120,42 @@ const MOODS: Mood[] = [
       { title: 'I Giorni', composer: 'Людовико Эйнауди', genre: 'Неоклассика', duration: '5:37', freq: '440 Гц', ytSearch: 'Ludovico Einaudi I Giorni piano' },
     ]
   },
+  {
+    id: 'fear',
+    emoji: '😨',
+    label: 'Страх',
+    color: 'hsl(195, 60%, 45%)',
+    desc: 'Обрести почву под ногами',
+    tracks: [
+      { title: 'Nimrod (Enigma Variations)', composer: 'Эдвард Элгар', genre: 'Классика', duration: '3:30', freq: '432 Гц', ytSearch: 'Elgar Nimrod Enigma Variations orchestra' },
+      { title: 'String Quartet in E minor', composer: 'Сибелиус', genre: 'Камерная', duration: '8:14', freq: '432 Гц', ytSearch: 'Sibelius String Quartet E minor Voces intimae' },
+      { title: 'Lux Aeterna', composer: 'Мортон Лауридсен', genre: 'Хоровая', duration: '7:20', freq: '432 Гц', ytSearch: 'Morten Lauridsen Lux Aeterna choral' },
+    ]
+  },
+  {
+    id: 'tired',
+    emoji: '😮‍💨',
+    label: 'Усталость',
+    color: 'hsl(220, 35%, 55%)',
+    desc: 'Мягкое восстановление сил',
+    tracks: [
+      { title: 'Gymnopédie No.3', composer: 'Эрик Сати', genre: 'Неоклассика', duration: '3:14', freq: '432 Гц', ytSearch: 'Erik Satie Gymnopedie No 3 piano' },
+      { title: 'Sleep', composer: 'Макс Рихтер', genre: 'Эмбиент', duration: '8:24', freq: '432 Гц', ytSearch: 'Max Richter Sleep piano' },
+      { title: 'Nuvole Bianche', composer: 'Людовико Эйнауди', genre: 'Неоклассика', duration: '5:55', freq: '432 Гц', ytSearch: 'Ludovico Einaudi Nuvole Bianche piano' },
+    ]
+  },
+  {
+    id: 'anger',
+    emoji: '🔥',
+    label: 'Гнев',
+    color: 'hsl(10, 75%, 52%)',
+    desc: 'Выразить и отпустить',
+    tracks: [
+      { title: 'Mars (The Planets)', composer: 'Густав Холст', genre: 'Симфония', duration: '7:30', freq: '440 Гц', ytSearch: 'Holst The Planets Mars Bringer of War orchestra' },
+      { title: 'Toccata and Fugue in D minor', composer: 'И.С. Бах', genre: 'Орган', duration: '9:10', freq: '440 Гц', ytSearch: 'Bach Toccata Fugue D minor organ' },
+      { title: 'Dies Irae (Requiem)', composer: 'Верди', genre: 'Хоровая', duration: '4:05', freq: '440 Гц', ytSearch: 'Verdi Requiem Dies Irae orchestra choir' },
+    ]
+  },
 ];
 
 const EXERCISES: Exercise[] = [
@@ -553,7 +589,7 @@ function MoodSection() {
           </p>
         </div>
 
-        <div className="grid grid-cols-3 md:grid-cols-6 gap-3 mb-10">
+        <div className="grid grid-cols-3 md:grid-cols-9 gap-3 mb-10">
           {MOODS.map((mood) => (
             <button
               key={mood.id}

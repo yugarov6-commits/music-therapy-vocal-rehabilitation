@@ -136,7 +136,7 @@ const EXERCISES: Exercise[] = [
   },
   {
     id: 'warmup',
-    title: 'Распевка связок',
+    title: 'Распевка складок',
     subtitle: 'Разогрев и эластичность',
     duration: 240,
     icon: 'Mic',

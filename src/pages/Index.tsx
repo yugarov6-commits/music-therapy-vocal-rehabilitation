@@ -988,7 +988,7 @@ function ExercisesSection() {
       <div className="w-full max-w-3xl">
         <div className="text-center mb-12">
           <p className="text-xs tracking-[0.3em] uppercase mb-3 font-body" style={{ color: 'hsl(270, 50%, 65%)' }}>
-            Вокальная реабилитация
+            Музовокальная реабилитация
           </p>
           <h2 className="font-display text-5xl md:text-6xl font-light mb-4" style={{ color: 'hsl(45, 30%, 90%)' }}>
             Упражнения
@@ -1430,8 +1430,8 @@ const ONBOARDING_STEPS = [
   {
     icon: '🌬',
     color: 'hsl(270, 50%, 60%)',
-    title: 'Вокальная реабилитация',
-    desc: 'Дыхательные упражнения на диафрагму и контроль выдоха, распевки для связок и артикуляция — шаг за шагом с инструкцией и таймером.',
+    title: 'Музовокальная реабилитация',
+    desc: 'Дыхательные упражнения на диафрагму и контроль выдоха, распевки для складок и артикуляция — шаг за шагом с инструкцией и таймером.',
   },
   {
     icon: '🎙',

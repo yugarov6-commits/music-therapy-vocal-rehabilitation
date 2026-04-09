@@ -372,50 +372,53 @@ const EXERCISES: Exercise[] = [
 function WaveBackground() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none">
-      <svg
-        className="absolute bottom-0 left-0 right-0 w-full"
-        viewBox="0 0 1440 320"
-        preserveAspectRatio="none"
-        style={{ height: '40%' }}
-      >
-        <path
-          className="animate-wave"
-          d="M0,160 C180,200 360,100 540,140 C720,180 900,80 1080,120 C1260,160 1380,200 1440,180 L1440,320 L0,320 Z"
-          fill="hsl(270, 50%, 15%, 0.3)"
-        />
-        <path
-          className="animate-wave-2"
-          d="M0,200 C200,160 400,240 600,200 C800,160 1000,240 1200,200 C1320,180 1400,210 1440,220 L1440,320 L0,320 Z"
-          fill="hsl(245, 55%, 20%, 0.25)"
-        />
-        <path
-          d="M0,250 C300,220 600,270 900,250 C1100,240 1300,260 1440,255 L1440,320 L0,320 Z"
-          fill="hsl(240, 20%, 10%, 0.4)"
-        />
+      {/* Big orbs */}
+      <div className="orb animate-orb" style={{ width: '500px', height: '500px', top: '-10%', left: '-8%', background: 'hsl(270,55%,28%,0.4)' }} />
+      <div className="orb animate-orb" style={{ width: '400px', height: '400px', bottom: '-5%', right: '-5%', background: 'hsl(200,60%,22%,0.35)', animationDelay: '4s' }} />
+      <div className="orb" style={{ width: '300px', height: '300px', top: '40%', left: '55%', background: 'hsl(330,55%,20%,0.25)' }} />
+
+      {/* Waves */}
+      <svg className="absolute bottom-0 left-0 right-0 w-full" viewBox="0 0 1440 320" preserveAspectRatio="none" style={{ height: '45%' }}>
+        <defs>
+          <linearGradient id="wg1" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="hsl(270,55%,18%)" stopOpacity="0.5" />
+            <stop offset="50%" stopColor="hsl(330,50%,18%)" stopOpacity="0.35" />
+            <stop offset="100%" stopColor="hsl(200,55%,15%)" stopOpacity="0.4" />
+          </linearGradient>
+          <linearGradient id="wg2" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor="hsl(245,55%,20%)" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="hsl(270,45%,15%)" stopOpacity="0.3" />
+          </linearGradient>
+        </defs>
+        <path className="animate-wave" d="M0,140 C180,190 360,90 540,130 C720,170 900,70 1080,110 C1260,150 1380,190 1440,165 L1440,320 L0,320 Z" fill="url(#wg1)" />
+        <path className="animate-wave-2" d="M0,190 C200,150 400,230 600,190 C800,150 1000,230 1200,195 C1320,175 1400,205 1440,215 L1440,320 L0,320 Z" fill="url(#wg2)" />
+        <path d="M0,245 C300,215 600,265 900,245 C1100,235 1300,255 1440,250 L1440,320 L0,320 Z" fill="hsl(235,25%,8%,0.6)" />
       </svg>
-      {[...Array(8)].map((_, i) => (
+
+      {/* Floating particles */}
+      {[...Array(12)].map((_, i) => (
         <div
           key={i}
           className="animate-float absolute rounded-full"
           style={{
-            width: `${3 + (i % 3) * 2}px`,
-            height: `${3 + (i % 3) * 2}px`,
-            left: `${10 + i * 11}%`,
-            top: `${20 + (i % 4) * 15}%`,
-            background: i % 2 === 0 ? 'hsl(45, 70%, 65%, 0.4)' : 'hsl(270, 50%, 70%, 0.3)',
-            animationDelay: `${i * 0.7}s`,
-            animationDuration: `${5 + i * 0.5}s`,
+            width: `${2 + (i % 4) * 2}px`,
+            height: `${2 + (i % 4) * 2}px`,
+            left: `${5 + i * 8}%`,
+            top: `${15 + (i % 5) * 14}%`,
+            background: [
+              'hsl(45,85%,65%,0.5)',
+              'hsl(270,55%,70%,0.4)',
+              'hsl(330,65%,65%,0.35)',
+              'hsl(175,55%,55%,0.4)',
+            ][i % 4],
+            animationDelay: `${i * 0.55}s`,
+            animationDuration: `${6 + i * 0.4}s`,
           }}
         />
       ))}
-      <div
-        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
-        style={{
-          width: '60vw',
-          height: '60vw',
-          background: 'radial-gradient(circle, hsl(270,50%,30%,0.06) 0%, transparent 70%)',
-        }}
-      />
+
+      {/* Central glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full" style={{ width: '70vw', height: '70vw', background: 'radial-gradient(circle, hsl(270,55%,30%,0.07) 0%, transparent 65%)' }} />
     </div>
   );
 }
@@ -1582,11 +1585,19 @@ export default function Index() {
   };
 
   return (
-    <div className="min-h-screen" style={{ background: 'hsl(240, 20%, 6%)' }}>
+    <div className="min-h-screen relative" style={{ background: 'hsl(235, 25%, 5%)' }}>
       {showOnboarding && <Onboarding onDone={handleOnboardingDone} />}
+
+      {/* Header */}
       <header
-        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-4"
-        style={{ background: 'hsl(240, 20%, 6%, 0.85)', backdropFilter: 'blur(20px)', borderBottom: '1px solid hsl(240, 15%, 14%)' }}
+        className="fixed top-0 left-0 right-0 z-50 flex items-center justify-between px-6 py-3"
+        style={{
+          background: 'hsl(235, 25%, 5%, 0.8)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          borderBottom: '1px solid hsl(270, 30%, 20%, 0.5)',
+          boxShadow: '0 1px 40px hsl(270, 55%, 15%, 0.3)',
+        }}
       >
         <div className="flex items-center">
           <img
@@ -1595,15 +1606,20 @@ export default function Index() {
             style={{ height: '40px', width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
           />
         </div>
-        <div className="hidden md:flex items-center gap-1 p-1 rounded-2xl" style={{ background: 'hsl(240, 18%, 10%)' }}>
+
+        {/* Desktop nav */}
+        <div className="hidden md:flex items-center gap-1 p-1 rounded-2xl" style={{ background: 'hsl(235, 22%, 10%)', border: '1px solid hsl(270, 30%, 18%)' }}>
           {SECTIONS.map((s) => (
             <button
               key={s.id}
               onClick={() => setActive(s.id)}
-              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-body transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-body transition-all duration-300"
               style={{
-                background: active === s.id ? 'hsl(240, 15%, 20%)' : 'transparent',
-                color: active === s.id ? 'hsl(45, 30%, 90%)' : 'hsl(240, 10%, 50%)',
+                background: active === s.id
+                  ? 'linear-gradient(135deg, hsl(270,40%,20%), hsl(235,30%,18%))'
+                  : 'transparent',
+                color: active === s.id ? 'hsl(45, 85%, 72%)' : 'hsl(240, 10%, 48%)',
+                boxShadow: active === s.id ? '0 2px 12px hsl(270,55%,20%,0.4)' : 'none',
               }}
             >
               <Icon name={s.icon} size={14} />
@@ -1611,31 +1627,41 @@ export default function Index() {
             </button>
           ))}
         </div>
+
+        {/* Decorative right dot */}
+        <div className="hidden md:block w-2 h-2 rounded-full animate-glow" style={{ background: 'hsl(45,85%,62%)' }} />
       </header>
 
-      <main className="pt-16">
+      <main className="pt-16 relative z-10">
         {active === 'mood' && <MoodSection />}
         {active === 'exercises' && <ExercisesSection />}
         {active === 'diary' && <DiarySection />}
         {active === 'profile' && <ProfileSection />}
       </main>
 
+      {/* Mobile nav */}
       <nav
         className="fixed bottom-0 left-0 right-0 z-50 flex md:hidden"
-        style={{ background: 'hsl(240, 20%, 7%, 0.95)', backdropFilter: 'blur(20px)', borderTop: '1px solid hsl(240, 15%, 14%)', paddingBottom: 'env(safe-area-inset-bottom)' }}
+        style={{
+          background: 'hsl(235, 25%, 6%, 0.92)',
+          backdropFilter: 'blur(24px)',
+          WebkitBackdropFilter: 'blur(24px)',
+          borderTop: '1px solid hsl(270, 30%, 18%, 0.6)',
+          paddingBottom: 'env(safe-area-inset-bottom)',
+          boxShadow: '0 -4px 30px hsl(270, 55%, 10%, 0.5)',
+        }}
       >
         {SECTIONS.map((s) => (
           <button
             key={s.id}
             onClick={() => setActive(s.id)}
-            className="flex-1 flex flex-col items-center gap-1 py-3 transition-all duration-200"
+            className="flex-1 flex flex-col items-center gap-1 py-3 transition-all duration-250 relative"
           >
-            <Icon
-              name={s.icon}
-              size={20}
-              style={{ color: active === s.id ? 'hsl(45, 70%, 65%)' : 'hsl(240, 10%, 40%)' }}
-            />
-            <span className="text-[10px] font-body" style={{ color: active === s.id ? 'hsl(45, 70%, 65%)' : 'hsl(240, 10%, 40%)' }}>
+            {active === s.id && (
+              <div className="absolute top-0 left-1/2 -translate-x-1/2 w-8 h-0.5 rounded-full" style={{ background: 'hsl(45,85%,62%)', boxShadow: '0 0 8px hsl(45,85%,62%)' }} />
+            )}
+            <Icon name={s.icon} size={20} style={{ color: active === s.id ? 'hsl(45, 85%, 65%)' : 'hsl(240, 10%, 38%)' }} />
+            <span className="text-[10px] font-body" style={{ color: active === s.id ? 'hsl(45, 85%, 65%)' : 'hsl(240, 10%, 38%)' }}>
               {s.label}
             </span>
           </button>

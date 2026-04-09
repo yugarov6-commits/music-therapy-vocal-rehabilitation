@@ -1,0 +1,47 @@
+{
+  "appId": "ru.artman.muzvocal",
+  "productName": "Музовокальная реабилитация",
+  "copyright": "© 2025 Artman",
+  "directories": {
+    "output": "dist-electron",
+    "buildResources": "public"
+  },
+  "files": [
+    "dist/**/*",
+    "electron/**/*",
+    "node_modules/**/*",
+    "package.json"
+  ],
+  "extraMetadata": {
+    "main": "electron/main.js"
+  },
+  "win": {
+    "target": [
+      {
+        "target": "nsis",
+        "arch": ["x64"]
+      },
+      {
+        "target": "portable",
+        "arch": ["x64"]
+      }
+    ],
+    "icon": "public/favicon.svg"
+  },
+  "nsis": {
+    "oneClick": false,
+    "allowToChangeInstallationDirectory": true,
+    "installerLanguages": ["ru_RU", "en_US"],
+    "language": "1049",
+    "createDesktopShortcut": true,
+    "createStartMenuShortcut": true,
+    "shortcutName": "МузВокал"
+  },
+  "mac": {
+    "target": "dmg",
+    "category": "public.app-category.healthcare-fitness"
+  },
+  "linux": {
+    "target": "AppImage"
+  }
+}

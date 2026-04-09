@@ -1,5 +1,8 @@
 import { useState, useRef, useEffect, useCallback } from 'react';
 import Icon from '@/components/ui/icon';
+import func2url from '@/func2url.json';
+
+const TRACKS_URL = func2url.tracks;
 
 // ─── Types ───────────────────────────────────────────────────────────────────
 
@@ -398,11 +401,128 @@ function useVoiceAnalyzer() {
   return { isListening, volume, pitch, warning, analyser, start, stop };
 }
 
+// ─── Audio Player Hook ────────────────────────────────────────────────────────
+
+type UploadedTrack = { key: string; name: string; url: string; size: number };
+
+function useAudioPlayer() {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [playingUrl, setPlayingUrl] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [duration, setDuration] = useState(0);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const audio = new Audio();
+    audioRef.current = audio;
+    audio.addEventListener('timeupdate', () => {
+      if (audio.duration) setProgress(audio.currentTime / audio.duration);
+    });
+    audio.addEventListener('loadedmetadata', () => setDuration(audio.duration));
+    audio.addEventListener('ended', () => { setPlayingUrl(null); setProgress(0); });
+    audio.addEventListener('canplay', () => setLoading(false));
+    return () => { audio.pause(); audio.src = ''; };
+  }, []);
+
+  const play = useCallback((url: string) => {
+    const audio = audioRef.current!;
+    if (playingUrl === url) {
+      if (audio.paused) { audio.play(); }
+      else { audio.pause(); setPlayingUrl(null); }
+      return;
+    }
+    setLoading(true);
+    audio.pause();
+    audio.src = url;
+    audio.load();
+    audio.play().catch(() => setLoading(false));
+    setPlayingUrl(url);
+    setProgress(0);
+  }, [playingUrl]);
+
+  const seek = useCallback((pct: number) => {
+    const audio = audioRef.current!;
+    if (audio.duration) audio.currentTime = pct * audio.duration;
+  }, []);
+
+  const stop = useCallback(() => {
+    const audio = audioRef.current!;
+    audio.pause();
+    audio.currentTime = 0;
+    setPlayingUrl(null);
+    setProgress(0);
+  }, []);
+
+  const fmtTime = (s: number) => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`;
+
+  return { playingUrl, progress, duration, loading, play, seek, stop, fmtTime };
+}
+
 // ─── Section: Mood ────────────────────────────────────────────────────────────
 
 function MoodSection() {
   const [selected, setSelected] = useState<Mood | null>(null);
-  const [playingTrack, setPlayingTrack] = useState<number | null>(null);
+  const [uploadedTracks, setUploadedTracks] = useState<UploadedTrack[]>([]);
+  const [uploading, setUploading] = useState(false);
+  const [uploadError, setUploadError] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const player = useAudioPlayer();
+
+  // Загружаем список треков при выборе настроения
+  useEffect(() => {
+    if (!selected) return;
+    fetch(`${TRACKS_URL}?mood=${selected.id}`)
+      .then(r => r.json())
+      .then(data => {
+        const filtered = (data.tracks || []).filter((t: UploadedTrack) =>
+          t.key.includes(`/${selected.id}/`)
+        );
+        setUploadedTracks(filtered);
+      })
+      .catch(() => setUploadedTracks([]));
+  }, [selected]);
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !selected) return;
+    const allowed = ['audio/mpeg', 'audio/wav', 'audio/ogg', 'audio/mp3'];
+    if (!allowed.includes(file.type) && !file.name.match(/\.(mp3|wav|ogg)$/i)) {
+      setUploadError('Поддерживаются только MP3, WAV, OGG');
+      return;
+    }
+    setUploading(true);
+    setUploadError(null);
+    try {
+      const buffer = await file.arrayBuffer();
+      const b64 = btoa(String.fromCharCode(...new Uint8Array(buffer)));
+      const res = await fetch(TRACKS_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ filename: file.name, data: b64, mood: selected.id }),
+      });
+      const data = await res.json();
+      if (data.url) {
+        setUploadedTracks(prev => [...prev, { key: data.key, name: data.name, url: data.url, size: file.size }]);
+      } else {
+        setUploadError('Ошибка загрузки');
+      }
+    } catch {
+      setUploadError('Ошибка загрузки');
+    } finally {
+      setUploading(false);
+      if (fileInputRef.current) fileInputRef.current.value = '';
+    }
+  };
+
+  const handleDelete = async (track: UploadedTrack) => {
+    player.stop();
+    await fetch(`${TRACKS_URL}?key=${encodeURIComponent(track.key)}`, { method: 'DELETE' });
+    setUploadedTracks(prev => prev.filter(t => t.key !== track.key));
+  };
+
+  const fmtSize = (bytes: number) => bytes < 1024 * 1024
+    ? `${(bytes / 1024).toFixed(0)} КБ`
+    : `${(bytes / 1024 / 1024).toFixed(1)} МБ`;
 
   return (
     <section className="relative min-h-screen flex flex-col items-center justify-center px-4 py-20">
@@ -416,7 +536,7 @@ function MoodSection() {
             Как вы себя чувствуете?
           </h2>
           <p className="font-body text-base" style={{ color: 'hsl(240, 10%, 55%)' }}>
-            Выберите настроение — получите персональный музыкальный подбор
+            Выберите настроение — загрузите треки и слушайте
           </p>
         </div>
 
@@ -424,7 +544,7 @@ function MoodSection() {
           {MOODS.map((mood) => (
             <button
               key={mood.id}
-              onClick={() => { setSelected(mood); setPlayingTrack(null); }}
+              onClick={() => { setSelected(mood); player.stop(); setUploadError(null); }}
               className={`mood-btn flex flex-col items-center gap-2 p-4 rounded-2xl border ${selected?.id === mood.id ? 'selected' : ''}`}
               style={{
                 background: selected?.id === mood.id ? `${mood.color.replace('hsl(', 'hsla(').replace(')', ', 0.15)')}` : 'hsl(240, 18%, 9%)',
@@ -439,6 +559,7 @@ function MoodSection() {
 
         {selected && (
           <div className="animate-fade-in rounded-3xl p-6 border" style={{ background: 'hsl(240, 18%, 9%)', borderColor: 'hsl(240, 15%, 18%)' }}>
+            {/* Header */}
             <div className="flex items-center gap-3 mb-6">
               <span style={{ fontSize: '32px' }}>{selected.emoji}</span>
               <div>
@@ -446,36 +567,110 @@ function MoodSection() {
                 <p className="text-sm font-body" style={{ color: 'hsl(240, 10%, 55%)' }}>{selected.desc}</p>
               </div>
               <div className="ml-auto">
-                <MusicBars playing={playingTrack !== null} color={selected.color} />
+                <MusicBars playing={player.playingUrl !== null} color={selected.color} />
               </div>
             </div>
-            <div className="flex flex-col gap-3">
-              {selected.tracks.map((track, idx) => (
-                <div
-                  key={idx}
-                  className="flex items-center gap-4 p-4 rounded-2xl border cursor-pointer transition-all duration-200"
-                  style={{
-                    background: playingTrack === idx ? `${selected.color}15` : 'hsl(240, 20%, 7%)',
-                    borderColor: playingTrack === idx ? selected.color : 'hsl(240, 15%, 15%)',
-                  }}
-                  onClick={() => setPlayingTrack(playingTrack === idx ? null : idx)}
-                >
-                  <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ background: `${selected.color}20` }}>
-                    {playingTrack === idx
-                      ? <Icon name="Pause" size={16} style={{ color: selected.color }} />
-                      : <Icon name="Play" size={16} style={{ color: selected.color }} />
-                    }
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p className="font-body font-medium text-sm truncate" style={{ color: 'hsl(45, 20%, 85%)' }}>{track.title}</p>
-                    <p className="text-xs truncate font-body" style={{ color: 'hsl(240, 10%, 50%)' }}>{track.composer} · {track.genre}</p>
-                  </div>
-                  <div className="text-right flex-shrink-0">
-                    <p className="text-xs font-body" style={{ color: 'hsl(240, 10%, 50%)' }}>{track.duration}</p>
-                    <p className="text-xs font-body" style={{ color: selected.color }}>{track.freq}</p>
-                  </div>
-                </div>
-              ))}
+
+            {/* Uploaded tracks */}
+            {uploadedTracks.length > 0 && (
+              <div className="flex flex-col gap-3 mb-5">
+                {uploadedTracks.map((track) => {
+                  const isPlaying = player.playingUrl === track.url;
+                  const displayName = track.name.replace(/_/g, ' ').replace(/\.(mp3|wav|ogg)$/i, '');
+                  return (
+                    <div
+                      key={track.key}
+                      className="rounded-2xl border transition-all duration-200"
+                      style={{
+                        background: isPlaying ? `${selected.color}12` : 'hsl(240, 20%, 7%)',
+                        borderColor: isPlaying ? selected.color : 'hsl(240, 15%, 15%)',
+                      }}
+                    >
+                      <div className="flex items-center gap-3 p-4">
+                        <button
+                          onClick={() => player.play(track.url)}
+                          className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0 transition-all hover:scale-105"
+                          style={{ background: `${selected.color}25` }}
+                        >
+                          {player.loading && isPlaying
+                            ? <Icon name="Loader" size={16} style={{ color: selected.color }} className="animate-spin" />
+                            : isPlaying
+                              ? <Icon name="Pause" size={16} style={{ color: selected.color }} />
+                              : <Icon name="Play" size={16} style={{ color: selected.color }} />
+                          }
+                        </button>
+                        <div className="flex-1 min-w-0">
+                          <p className="font-body font-medium text-sm truncate" style={{ color: 'hsl(45, 20%, 88%)' }}>{displayName}</p>
+                          <p className="text-xs font-body" style={{ color: 'hsl(240, 10%, 45%)' }}>{fmtSize(track.size)}</p>
+                        </div>
+                        {isPlaying && (
+                          <span className="text-xs font-body tabular-nums" style={{ color: selected.color }}>
+                            {player.fmtTime(player.progress * player.duration)}
+                          </span>
+                        )}
+                        <button
+                          onClick={() => handleDelete(track)}
+                          className="w-7 h-7 rounded-lg flex items-center justify-center transition-all hover:opacity-70 flex-shrink-0"
+                          style={{ background: 'hsl(240, 15%, 14%)' }}
+                        >
+                          <Icon name="Trash2" size={13} style={{ color: 'hsl(240, 10%, 40%)' }} />
+                        </button>
+                      </div>
+
+                      {/* Progress bar */}
+                      {isPlaying && (
+                        <div
+                          className="mx-4 mb-3 rounded-full overflow-hidden cursor-pointer"
+                          style={{ height: '3px', background: 'hsl(240, 15%, 18%)' }}
+                          onClick={(e) => {
+                            const rect = e.currentTarget.getBoundingClientRect();
+                            player.seek((e.clientX - rect.left) / rect.width);
+                          }}
+                        >
+                          <div
+                            className="h-full rounded-full transition-all duration-200"
+                            style={{ width: `${player.progress * 100}%`, background: selected.color }}
+                          />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            )}
+
+            {/* Upload zone */}
+            <div>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept=".mp3,.wav,.ogg,audio/*"
+                className="hidden"
+                onChange={handleFileUpload}
+              />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={uploading}
+                className="w-full py-4 rounded-2xl border-2 border-dashed font-body text-sm transition-all hover:opacity-80 flex items-center justify-center gap-2"
+                style={{
+                  borderColor: `${selected.color}40`,
+                  color: uploading ? selected.color : 'hsl(240, 10%, 50%)',
+                  background: 'transparent',
+                }}
+              >
+                {uploading
+                  ? <><Icon name="Loader" size={16} style={{ color: selected.color }} className="animate-spin" /> Загружаю...</>
+                  : <><Icon name="Upload" size={16} style={{ color: selected.color }} /> Загрузить трек (MP3, WAV, OGG)</>
+                }
+              </button>
+              {uploadError && (
+                <p className="text-xs font-body mt-2 text-center" style={{ color: 'hsl(0, 65%, 60%)' }}>{uploadError}</p>
+              )}
+              {uploadedTracks.length === 0 && !uploading && (
+                <p className="text-xs font-body mt-2 text-center" style={{ color: 'hsl(240, 10%, 38%)' }}>
+                  Треков для этого настроения пока нет
+                </p>
+              )}
             </div>
           </div>
         )}

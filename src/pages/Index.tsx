@@ -21,6 +21,7 @@ type Track = {
   genre: string;
   duration: string;
   freq: string;
+  ytSearch: string;
 };
 
 type Exercise = {
@@ -54,9 +55,9 @@ const MOODS: Mood[] = [
     color: 'hsl(175, 55%, 45%)',
     desc: 'Умиротворение и тишина',
     tracks: [
-      { title: 'Gymnopédie No.1', composer: 'Эрик Сати', genre: 'Неоклассика', duration: '3:04', freq: '432 Гц' },
-      { title: 'Clair de Lune', composer: 'Клод Дебюсси', genre: 'Классика', duration: '5:12', freq: '528 Гц' },
-      { title: 'Experience', composer: 'Людовико Эйнауди', genre: 'Неоклассика', duration: '5:13', freq: '432 Гц' },
+      { title: 'Gymnopédie No.1', composer: 'Эрик Сати', genre: 'Неоклассика', duration: '3:04', freq: '432 Гц', ytSearch: 'Erik Satie Gymnopedie No 1 piano' },
+      { title: 'Clair de Lune', composer: 'Клод Дебюсси', genre: 'Классика', duration: '5:12', freq: '528 Гц', ytSearch: 'Debussy Clair de Lune piano' },
+      { title: 'Experience', composer: 'Людовико Эйнауди', genre: 'Неоклассика', duration: '5:13', freq: '432 Гц', ytSearch: 'Ludovico Einaudi Experience piano' },
     ]
   },
   {
@@ -66,9 +67,9 @@ const MOODS: Mood[] = [
     color: 'hsl(270, 50%, 55%)',
     desc: 'Успокоить бурю внутри',
     tracks: [
-      { title: 'Spiegel im Spiegel', composer: 'Арво Пярт', genre: 'Минимализм', duration: '10:10', freq: '528 Гц' },
-      { title: 'Weightless', composer: 'Marconi Union', genre: 'Эмбиент', duration: '8:09', freq: '60 BPM' },
-      { title: 'Opus 23', composer: 'Нильс Фрам', genre: 'Неоклассика', duration: '4:48', freq: '432 Гц' },
+      { title: 'Spiegel im Spiegel', composer: 'Арво Пярт', genre: 'Минимализм', duration: '10:10', freq: '528 Гц', ytSearch: 'Arvo Part Spiegel im Spiegel piano violin' },
+      { title: 'Weightless', composer: 'Marconi Union', genre: 'Эмбиент', duration: '8:09', freq: '60 BPM', ytSearch: 'Marconi Union Weightless ambient' },
+      { title: 'Opus 23', composer: 'Нильс Фрам', genre: 'Неоклассика', duration: '4:48', freq: '432 Гц', ytSearch: 'Nils Frahm Opus 23 piano' },
     ]
   },
   {
@@ -78,9 +79,9 @@ const MOODS: Mood[] = [
     color: 'hsl(210, 50%, 50%)',
     desc: 'Принять и отпустить',
     tracks: [
-      { title: 'Adagio for Strings', composer: 'Сэмюэл Барбер', genre: 'Классика', duration: '9:32', freq: '432 Гц' },
-      { title: 'River Flows in You', composer: 'Юндзи Ли', genre: 'Неоклассика', duration: '3:45', freq: '432 Гц' },
-      { title: "Comptine d'un autre été", composer: 'Янн Тирсен', genre: 'Кино', duration: '2:31', freq: '432 Гц' },
+      { title: 'Adagio for Strings', composer: 'Сэмюэл Барбер', genre: 'Классика', duration: '9:32', freq: '432 Гц', ytSearch: 'Barber Adagio for Strings orchestra' },
+      { title: 'River Flows in You', composer: 'Юндзи Ли', genre: 'Неоклассика', duration: '3:45', freq: '432 Гц', ytSearch: 'Yiruma River Flows in You piano' },
+      { title: "Comptine d'un autre été", composer: 'Янн Тирсен', genre: 'Кино', duration: '2:31', freq: '432 Гц', ytSearch: 'Yann Tiersen Comptine piano Amelie' },
     ]
   },
   {
@@ -90,9 +91,9 @@ const MOODS: Mood[] = [
     color: 'hsl(45, 70%, 65%)',
     desc: 'Подъём и вдохновение',
     tracks: [
-      { title: 'The Four Seasons: Spring', composer: 'Вивальди', genre: 'Барокко', duration: '11:02', freq: '440 Гц' },
-      { title: 'Beethoven 5th', composer: 'Людвиг ван Бетховен', genre: 'Классика', duration: '7:22', freq: '440 Гц' },
-      { title: 'Divenire', composer: 'Людовико Эйнауди', genre: 'Неоклассика', duration: '6:40', freq: '440 Гц' },
+      { title: 'The Four Seasons: Spring', composer: 'Вивальди', genre: 'Барокко', duration: '11:02', freq: '440 Гц', ytSearch: 'Vivaldi Four Seasons Spring orchestra' },
+      { title: 'Symphony No.5', composer: 'Людвиг ван Бетховен', genre: 'Классика', duration: '7:22', freq: '440 Гц', ytSearch: 'Beethoven Symphony 5 orchestra' },
+      { title: 'Divenire', composer: 'Людовико Эйнауди', genre: 'Неоклассика', duration: '6:40', freq: '440 Гц', ytSearch: 'Ludovico Einaudi Divenire piano orchestra' },
     ]
   },
   {
@@ -102,9 +103,9 @@ const MOODS: Mood[] = [
     color: 'hsl(245, 55%, 60%)',
     desc: 'Ясность и концентрация',
     tracks: [
-      { title: 'Bach Cello Suite No.1', composer: 'И.С. Бах', genre: 'Барокко', duration: '23:30', freq: '432 Гц' },
-      { title: 'Metamorphosis Two', composer: 'Филип Гласс', genre: 'Минимализм', duration: '5:31', freq: '432 Гц' },
-      { title: 'On the Nature of Daylight', composer: 'Макс Рихтер', genre: 'Неоклассика', duration: '7:01', freq: '432 Гц' },
+      { title: 'Cello Suite No.1 Prelude', composer: 'И.С. Бах', genre: 'Барокко', duration: '2:20', freq: '432 Гц', ytSearch: 'Bach Cello Suite No 1 Prelude' },
+      { title: 'Metamorphosis Two', composer: 'Филип Гласс', genre: 'Минимализм', duration: '5:31', freq: '432 Гц', ytSearch: 'Philip Glass Metamorphosis Two piano' },
+      { title: 'On the Nature of Daylight', composer: 'Макс Рихтер', genre: 'Неоклассика', duration: '7:01', freq: '432 Гц', ytSearch: 'Max Richter On the Nature of Daylight' },
     ]
   },
   {
@@ -114,9 +115,9 @@ const MOODS: Mood[] = [
     color: 'hsl(35, 80%, 60%)',
     desc: 'Лёгкость и свет',
     tracks: [
-      { title: 'Piano Concerto No.21', composer: 'Моцарт', genre: 'Классика', duration: '8:15', freq: '440 Гц' },
-      { title: "La Valse d'Amélie", composer: 'Янн Тирсен', genre: 'Кино', duration: '3:07', freq: '440 Гц' },
-      { title: 'I Giorni', composer: 'Людовико Эйнауди', genre: 'Неоклассика', duration: '5:37', freq: '440 Гц' },
+      { title: 'Piano Concerto No.21 Andante', composer: 'Моцарт', genre: 'Классика', duration: '6:15', freq: '440 Гц', ytSearch: 'Mozart Piano Concerto 21 Andante' },
+      { title: "La Valse d'Amélie", composer: 'Янн Тирсен', genre: 'Кино', duration: '3:07', freq: '440 Гц', ytSearch: 'Yann Tiersen La Valse Amelie piano' },
+      { title: 'I Giorni', composer: 'Людовико Эйнауди', genre: 'Неоклассика', duration: '5:37', freq: '440 Гц', ytSearch: 'Ludovico Einaudi I Giorni piano' },
     ]
   },
 ];
@@ -651,6 +652,40 @@ function MoodSection() {
               </div>
             )}
 
+            {/* Recommended tracks */}
+            <div className="mb-5">
+              <p className="text-xs tracking-widest uppercase mb-3 font-body" style={{ color: 'hsl(240, 10%, 40%)' }}>
+                Рекомендованные треки — найдите и скачайте
+              </p>
+              <div className="flex flex-col gap-2">
+                {selected.tracks.map((track, idx) => (
+                  <div
+                    key={idx}
+                    className="flex items-center gap-3 px-4 py-3 rounded-xl"
+                    style={{ background: 'hsl(240, 20%, 7%)', border: '1px solid hsl(240, 15%, 14%)' }}
+                  >
+                    <div className="flex-1 min-w-0">
+                      <p className="font-body text-sm truncate" style={{ color: 'hsl(45, 15%, 75%)' }}>{track.title}</p>
+                      <p className="text-xs font-body" style={{ color: 'hsl(240, 10%, 42%)' }}>{track.composer} · {track.genre} · {track.freq}</p>
+                    </div>
+                    <a
+                      href={`https://www.youtube.com/results?search_query=${encodeURIComponent(track.ytSearch)}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg font-body text-xs flex-shrink-0 transition-all hover:opacity-80"
+                      style={{ background: `${selected.color}20`, color: selected.color, border: `1px solid ${selected.color}30` }}
+                    >
+                      <Icon name="ExternalLink" size={11} />
+                      Найти
+                    </a>
+                  </div>
+                ))}
+              </div>
+              <p className="text-xs font-body mt-3 leading-relaxed" style={{ color: 'hsl(240, 10%, 35%)' }}>
+                Найдите трек → скачайте MP3 через любой YouTube-конвертер → загрузите ниже
+              </p>
+            </div>
+
             {/* Upload zone */}
             <div>
               <input
@@ -680,7 +715,7 @@ function MoodSection() {
               )}
               {uploadedTracks.length === 0 && !uploading && (
                 <p className="text-xs font-body mt-2 text-center" style={{ color: 'hsl(240, 10%, 38%)' }}>
-                  Треков для этого настроения пока нет
+                  Загруженных треков для этого настроения пока нет
                 </p>
               )}
             </div>

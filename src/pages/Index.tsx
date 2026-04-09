@@ -1487,9 +1487,9 @@ function Onboarding({ onDone }: { onDone: () => void }) {
         {/* Logo */}
         <div className="mb-12 opacity-70">
           <img
-            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/bucket/cd117cd2-1512-4349-a761-3bfab1887fc2.jpg"
-            alt="Артманько — Театр Рока"
-            style={{ height: '32px', width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
+            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/bucket/fc9ee871-0ca0-42d2-83e2-e43815ed163b.jpg"
+            alt="Artman"
+            style={{ height: '36px', width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
           />
         </div>
 
@@ -1590,9 +1590,9 @@ export default function Index() {
       >
         <div className="flex items-center">
           <img
-            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/bucket/cd117cd2-1512-4349-a761-3bfab1887fc2.jpg"
-            alt="Артманько — Театр Рока"
-            style={{ height: '36px', width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
+            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/bucket/fc9ee871-0ca0-42d2-83e2-e43815ed163b.jpg"
+            alt="Artman"
+            style={{ height: '40px', width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
           />
         </div>
         <div className="hidden md:flex items-center gap-1 p-1 rounded-2xl" style={{ background: 'hsl(240, 18%, 10%)' }}>

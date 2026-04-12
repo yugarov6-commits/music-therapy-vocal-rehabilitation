@@ -7,28 +7,18 @@ type VoiceState = ReturnType<typeof useVoiceAnalyzer>;
 
 type Props = {
   activeEx: Exercise;
-  timeLeft: number;
-  running: boolean;
   step: number;
-  progress: number;
   voice: VoiceState;
-  fmt: (s: number) => string;
   onBack: () => void;
   onStepClick: (i: number) => void;
-  onToggleTimer: () => void;
 };
 
 export default function ExerciseActiveView({
   activeEx,
-  timeLeft,
-  running,
   step,
-  progress,
   voice,
-  fmt,
   onBack,
   onStepClick,
-  onToggleTimer,
 }: Props) {
   return (
     <div className="animate-fade-in">
@@ -50,27 +40,6 @@ export default function ExerciseActiveView({
           <div>
             <h3 className="font-display text-3xl font-light" style={{ color: 'hsl(45, 30%, 90%)' }}>{activeEx.title}</h3>
             <p className="font-body text-sm" style={{ color: 'hsl(240, 10%, 55%)' }}>{activeEx.subtitle}</p>
-          </div>
-        </div>
-
-        {/* Timer circle */}
-        <div className="flex justify-center mb-8">
-          <div className="relative">
-            <svg width="160" height="160" className="-rotate-90">
-              <circle cx="80" cy="80" r="70" fill="none" stroke="hsl(240, 15%, 15%)" strokeWidth="6" />
-              <circle
-                cx="80" cy="80" r="70" fill="none"
-                stroke={activeEx.color} strokeWidth="6"
-                strokeLinecap="round"
-                strokeDasharray={`${2 * Math.PI * 70}`}
-                strokeDashoffset={`${2 * Math.PI * 70 * (1 - progress / 100)}`}
-                style={{ transition: 'stroke-dashoffset 1s linear' }}
-              />
-            </svg>
-            <div className="absolute inset-0 flex flex-col items-center justify-center">
-              <span className="font-display text-4xl" style={{ color: 'hsl(45, 30%, 90%)' }}>{fmt(timeLeft)}</span>
-              <span className="text-xs font-body" style={{ color: 'hsl(240, 10%, 50%)' }}>осталось</span>
-            </div>
           </div>
         </div>
 
@@ -151,17 +120,7 @@ export default function ExerciseActiveView({
           </div>
         )}
 
-        {/* Start/pause button */}
-        <button
-          onClick={onToggleTimer}
-          className="w-full py-4 rounded-2xl font-body font-medium text-base transition-all duration-200 hover:opacity-90"
-          style={{
-            background: running ? 'hsl(240, 15%, 20%)' : activeEx.color,
-            color: running ? 'hsl(45, 20%, 80%)' : 'hsl(240, 20%, 6%)',
-          }}
-        >
-          {running ? '⏸ Пауза' : timeLeft === 0 ? '↺ Начать снова' : '▶ Начать'}
-        </button>
+
       </div>
     </div>
   );

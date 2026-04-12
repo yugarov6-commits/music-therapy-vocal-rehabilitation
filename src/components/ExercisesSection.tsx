@@ -4,24 +4,26 @@ import { EXERCISES } from '@/components/exercises/exercise.types';
 import type { Exercise } from '@/components/exercises/exercise.types';
 import ExerciseActiveView from '@/components/exercises/ExerciseActiveView';
 
+const CDN = 'https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/bucket';
+
 const TRACKS = [
   {
-    url: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Meditation%20Impromptu%2001.mp3',
+    url: `${CDN}/tracks/meditation/meditation-impromptu.mp3`,
     title: 'Meditation Impromptu',
     mood: 'Медитация',
   },
   {
-    url: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Relaxing%20Piano%20Music.mp3',
+    url: `${CDN}/tracks/relaxing/relaxing-piano.mp3`,
     title: 'Relaxing Piano',
     mood: 'Расслабление',
   },
   {
-    url: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Healing.mp3',
+    url: `${CDN}/tracks/healing/healing.mp3`,
     title: 'Healing',
     mood: 'Восстановление',
   },
   {
-    url: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Slow%20Burn.mp3',
+    url: `${CDN}/tracks/focus/slow-burn.mp3`,
     title: 'Slow Burn',
     mood: 'Концентрация',
   },

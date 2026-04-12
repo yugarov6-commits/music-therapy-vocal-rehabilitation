@@ -1,0 +1,12 @@
+{
+  "tests": [
+    {
+      "name": "Upload tracks to S3",
+      "method": "POST",
+      "path": "/",
+      "expectedStatus": 200,
+      "expectedBody": {"tracks": []},
+      "bodyMatcher": "partial"
+    }
+  ]
+}

@@ -4,23 +4,47 @@ import { EXERCISES } from '@/components/exercises/exercise.types';
 import type { Exercise } from '@/components/exercises/exercise.types';
 import ExerciseActiveView from '@/components/exercises/ExerciseActiveView';
 
-const TRACK = {
-  url: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Meditation%20Impromptu%2001.mp3',
-  title: 'Meditation Impromptu 01',
-  author: 'Kevin MacLeod (CC BY 4.0)',
-};
+const TRACKS = [
+  {
+    url: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Meditation%20Impromptu%2001.mp3',
+    title: 'Meditation Impromptu',
+    mood: 'Медитация',
+  },
+  {
+    url: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Relaxing%20Piano%20Music.mp3',
+    title: 'Relaxing Piano',
+    mood: 'Расслабление',
+  },
+  {
+    url: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Healing.mp3',
+    title: 'Healing',
+    mood: 'Восстановление',
+  },
+  {
+    url: 'https://incompetech.com/music/royalty-free/mp3-royaltyfree/Slow%20Burn.mp3',
+    title: 'Slow Burn',
+    mood: 'Концентрация',
+  },
+];
 
 function MusicPlayer() {
   const audioRef = useRef<HTMLAudioElement>(null);
   const [playing, setPlaying] = useState(false);
   const [volume, setVolume] = useState(0.4);
+  const [trackIdx, setTrackIdx] = useState(0);
+
+  const track = TRACKS[trackIdx];
 
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = volume;
     audio.loop = true;
-  }, []);
+    const wasPlaying = playing;
+    audio.pause();
+    audio.load();
+    if (wasPlaying) audio.play().catch(() => {});
+  }, [trackIdx]);
 
   useEffect(() => {
     if (audioRef.current) audioRef.current.volume = volume;
@@ -37,38 +61,66 @@ function MusicPlayer() {
     }
   };
 
+  const prev = () => setTrackIdx(i => (i - 1 + TRACKS.length) % TRACKS.length);
+  const next = () => setTrackIdx(i => (i + 1) % TRACKS.length);
+
   return (
     <div
-      className="flex items-center gap-4 px-5 py-3 rounded-2xl mb-8"
+      className="rounded-2xl mb-8 overflow-hidden"
       style={{ background: 'hsl(240, 18%, 9%)', border: '1px solid hsl(240, 15%, 18%)' }}
     >
-      <audio ref={audioRef} src={TRACK.url} preload="none" />
+      <audio ref={audioRef} src={track.url} preload="none" />
 
-      <button
-        onClick={toggle}
-        className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-all hover:opacity-80"
-        style={{ background: 'hsl(270, 50%, 35%)' }}
-      >
-        <Icon name={playing ? 'Pause' : 'Play'} size={16} style={{ color: 'hsl(45, 85%, 75%)' }} />
-      </button>
-
-      <div className="flex-1 min-w-0">
-        <p className="text-xs font-body font-medium truncate" style={{ color: 'hsl(45, 20%, 80%)' }}>{TRACK.title}</p>
-        <p className="text-[10px] font-body truncate" style={{ color: 'hsl(240, 10%, 40%)' }}>{TRACK.author}</p>
+      {/* Track selector */}
+      <div className="flex gap-2 px-4 pt-3 pb-2">
+        {TRACKS.map((t, i) => (
+          <button
+            key={i}
+            onClick={() => setTrackIdx(i)}
+            className="flex-1 py-1.5 rounded-xl text-[10px] font-body transition-all duration-200"
+            style={{
+              background: i === trackIdx ? 'hsl(270, 45%, 28%)' : 'hsl(240, 15%, 13%)',
+              color: i === trackIdx ? 'hsl(45, 85%, 75%)' : 'hsl(240, 10%, 45%)',
+              border: i === trackIdx ? '1px solid hsl(270, 40%, 38%)' : '1px solid transparent',
+            }}
+          >
+            {t.mood}
+          </button>
+        ))}
       </div>
 
-      <div className="flex items-center gap-2 flex-shrink-0">
-        <Icon name="Volume2" size={13} style={{ color: 'hsl(240, 10%, 45%)' }} />
-        <input
-          type="range"
-          min={0}
-          max={1}
-          step={0.05}
-          value={volume}
-          onChange={e => setVolume(Number(e.target.value))}
-          className="w-20 accent-purple-400"
-          style={{ cursor: 'pointer' }}
-        />
+      {/* Controls */}
+      <div className="flex items-center gap-3 px-4 pb-3">
+        <button onClick={prev} className="transition-opacity hover:opacity-70">
+          <Icon name="SkipBack" size={15} style={{ color: 'hsl(240, 10%, 50%)' }} />
+        </button>
+
+        <button
+          onClick={toggle}
+          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 transition-all hover:opacity-80"
+          style={{ background: 'hsl(270, 50%, 35%)' }}
+        >
+          <Icon name={playing ? 'Pause' : 'Play'} size={16} style={{ color: 'hsl(45, 85%, 75%)' }} />
+        </button>
+
+        <button onClick={next} className="transition-opacity hover:opacity-70">
+          <Icon name="SkipForward" size={15} style={{ color: 'hsl(240, 10%, 50%)' }} />
+        </button>
+
+        <div className="flex-1 min-w-0">
+          <p className="text-xs font-body font-medium truncate" style={{ color: 'hsl(45, 20%, 80%)' }}>{track.title}</p>
+          <p className="text-[10px] font-body" style={{ color: 'hsl(240, 10%, 38%)' }}>Kevin MacLeod · CC BY 4.0</p>
+        </div>
+
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <Icon name="Volume2" size={13} style={{ color: 'hsl(240, 10%, 45%)' }} />
+          <input
+            type="range" min={0} max={1} step={0.05} value={volume}
+            onChange={e => setVolume(Number(e.target.value))}
+            className="w-16 accent-purple-400"
+            style={{ cursor: 'pointer' }}
+          />
+        </div>
       </div>
     </div>
   );

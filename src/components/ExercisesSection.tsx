@@ -2,23 +2,19 @@ import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import { EXERCISES } from '@/components/exercises/exercise.types';
 import type { Exercise } from '@/components/exercises/exercise.types';
-import { useVoiceAnalyzer } from '@/components/exercises/useVoiceAnalyzer';
 import ExerciseActiveView from '@/components/exercises/ExerciseActiveView';
 
 export default function ExercisesSection() {
   const [activeEx, setActiveEx] = useState<Exercise | null>(null);
   const [step, setStep] = useState(0);
-  const voice = useVoiceAnalyzer();
 
   const startEx = (ex: Exercise) => {
     setActiveEx(ex);
     setStep(0);
-    voice.start();
   };
 
   const handleBack = () => {
     setActiveEx(null);
-    voice.stop();
   };
 
   return (
@@ -32,7 +28,7 @@ export default function ExercisesSection() {
             Упражнения
           </h2>
           <p className="font-body text-base" style={{ color: 'hsl(240, 10%, 55%)' }}>
-            Тренировки с анализом голоса в реальном времени
+            Техника и методика вокально-речевой реабилитации
           </p>
         </div>
 
@@ -61,7 +57,6 @@ export default function ExercisesSection() {
           <ExerciseActiveView
             activeEx={activeEx}
             step={step}
-            voice={voice}
             onBack={handleBack}
             onStepClick={setStep}
           />

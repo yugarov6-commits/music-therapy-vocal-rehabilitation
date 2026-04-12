@@ -1,14 +1,9 @@
 import Icon from '@/components/ui/icon';
 import type { Exercise } from '@/components/exercises/exercise.types';
-import type { useVoiceAnalyzer } from '@/components/exercises/useVoiceAnalyzer';
-import ExerciseVoicePanel from '@/components/exercises/ExerciseVoicePanel';
-
-type VoiceState = ReturnType<typeof useVoiceAnalyzer>;
 
 type Props = {
   activeEx: Exercise;
   step: number;
-  voice: VoiceState;
   onBack: () => void;
   onStepClick: (i: number) => void;
 };
@@ -16,7 +11,6 @@ type Props = {
 export default function ExerciseActiveView({
   activeEx,
   step,
-  voice,
   onBack,
   onStepClick,
 }: Props) {
@@ -42,9 +36,6 @@ export default function ExerciseActiveView({
             <p className="font-body text-sm" style={{ color: 'hsl(240, 10%, 55%)' }}>{activeEx.subtitle}</p>
           </div>
         </div>
-
-        {/* Voice panel */}
-        <ExerciseVoicePanel voice={voice} />
 
         {/* Exercise warning */}
         {activeEx.warning && (

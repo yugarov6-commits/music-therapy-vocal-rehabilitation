@@ -10,8 +10,6 @@ export default function ExercisesSection() {
   const [step, setStep] = useState(0);
   const voice = useVoiceAnalyzer();
 
-  const fmt = (s: number) => `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
-
   const startEx = (ex: Exercise) => {
     setActiveEx(ex);
     setStep(0);
@@ -53,11 +51,7 @@ export default function ExercisesSection() {
                   </div>
                   <div className="flex-1">
                     <h3 className="font-display text-xl font-medium mb-1" style={{ color: 'hsl(45, 20%, 88%)' }}>{ex.title}</h3>
-                    <p className="text-sm font-body mb-3" style={{ color: 'hsl(240, 10%, 50%)' }}>{ex.subtitle}</p>
-                    <div className="flex items-center gap-2">
-                      <Icon name="Clock" size={12} style={{ color: ex.color }} />
-                      <span className="text-xs font-body" style={{ color: ex.color }}>{fmt(ex.duration)}</span>
-                    </div>
+                    <p className="text-sm font-body" style={{ color: 'hsl(240, 10%, 50%)' }}>{ex.subtitle}</p>
                   </div>
                 </div>
               </button>

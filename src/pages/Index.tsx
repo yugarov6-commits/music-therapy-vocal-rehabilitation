@@ -74,11 +74,11 @@ function Onboarding({ onDone }: { onDone: () => void }) {
 
       <div className="relative z-10 w-full max-w-sm flex flex-col items-center text-center">
         {/* Logo */}
-        <div className="mb-12 opacity-70">
+        <div className="mb-10">
           <img
-            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/bucket/fc9ee871-0ca0-42d2-83e2-e43815ed163b.jpg"
-            alt="Artman"
-            style={{ height: '36px', width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
+            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/files/6f8ae499-9f8f-42a2-93b7-698c3399794b.jpg"
+            alt="МузВокал"
+            style={{ width: '96px', height: '96px', borderRadius: '24px', objectFit: 'cover', boxShadow: '0 0 40px hsl(270, 50%, 30%, 0.5)' }}
           />
         </div>
 
@@ -184,12 +184,13 @@ export default function Index() {
           boxShadow: '0 1px 40px hsl(270, 55%, 15%, 0.3)',
         }}
       >
-        <div className="flex items-center">
+        <div className="flex items-center gap-3">
           <img
-            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/bucket/fc9ee871-0ca0-42d2-83e2-e43815ed163b.jpg"
-            alt="Artman"
-            style={{ height: '40px', width: 'auto', filter: 'brightness(0) invert(1)', objectFit: 'contain' }}
+            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/files/6f8ae499-9f8f-42a2-93b7-698c3399794b.jpg"
+            alt="МузВокал"
+            style={{ width: '36px', height: '36px', borderRadius: '10px', objectFit: 'cover' }}
           />
+          <span className="font-display text-sm font-light hidden sm:block" style={{ color: 'hsl(45, 30%, 80%)' }}>МузВокал</span>
         </div>
 
         {/* Desktop nav */}

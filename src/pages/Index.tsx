@@ -74,12 +74,15 @@ function Onboarding({ onDone }: { onDone: () => void }) {
 
       <div className="relative z-10 w-full max-w-sm flex flex-col items-center text-center">
         {/* Logo */}
-        <div className="mb-10">
+        <div className="mb-8 flex flex-col items-center gap-4">
           <img
-            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/files/6f8ae499-9f8f-42a2-93b7-698c3399794b.jpg"
-            alt="МузВокал"
-            style={{ width: '96px', height: '96px', borderRadius: '24px', objectFit: 'cover', boxShadow: '0 0 40px hsl(270, 50%, 30%, 0.5)' }}
+            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/files/5c584b7f-67fe-4cb8-b16a-85c4a20fb251.jpg"
+            alt="Музыка твоего организма"
+            style={{ width: '108px', height: '108px', borderRadius: '28px', objectFit: 'cover', boxShadow: '0 0 50px hsl(270, 50%, 30%, 0.6)' }}
           />
+          <div>
+            <p className="font-display text-xl font-light" style={{ color: 'hsl(45, 30%, 92%)' }}>Музыка твоего организма</p>
+          </div>
         </div>
 
         {/* Icon */}
@@ -186,11 +189,11 @@ export default function Index() {
       >
         <div className="flex items-center gap-3">
           <img
-            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/files/6f8ae499-9f8f-42a2-93b7-698c3399794b.jpg"
-            alt="МузВокал"
+            src="https://cdn.poehali.dev/projects/d1e593c7-90a0-4811-9d31-204e6447efe5/files/5c584b7f-67fe-4cb8-b16a-85c4a20fb251.jpg"
+            alt="Музыка твоего организма"
             style={{ width: '36px', height: '36px', borderRadius: '10px', objectFit: 'cover' }}
           />
-          <span className="font-display text-sm font-light hidden sm:block" style={{ color: 'hsl(45, 30%, 80%)' }}>МузВокал</span>
+          <span className="font-display text-sm font-light hidden sm:block" style={{ color: 'hsl(45, 30%, 80%)' }}>Музыка твоего организма</span>
         </div>
 
         {/* Desktop nav */}

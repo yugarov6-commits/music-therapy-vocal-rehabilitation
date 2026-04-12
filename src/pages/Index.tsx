@@ -2,8 +2,7 @@ import { useState } from 'react';
 import Icon from '@/components/ui/icon';
 import MoodSection from '@/components/MoodSection';
 import ExercisesSection from '@/components/ExercisesSection';
-import DiarySection from '@/components/DiarySection';
-import ProfileSection from '@/components/ProfileSection';
+import AboutSection from '@/components/AboutSection';
 
 // ─── Onboarding ───────────────────────────────────────────────────────────────
 
@@ -154,8 +153,7 @@ function Onboarding({ onDone }: { onDone: () => void }) {
 const SECTIONS = [
   { id: 'mood', label: 'Настроение', icon: 'Heart' },
   { id: 'exercises', label: 'Упражнения', icon: 'Mic' },
-  { id: 'diary', label: 'Дневник', icon: 'BookOpen' },
-  { id: 'profile', label: 'Профиль', icon: 'User' },
+  { id: 'about', label: 'О методе', icon: 'BookOpen' },
 ] as const;
 
 // ─── App ──────────────────────────────────────────────────────────────────────
@@ -222,8 +220,7 @@ export default function Index() {
       <main className="pt-16 relative z-10">
         {active === 'mood' && <MoodSection />}
         {active === 'exercises' && <ExercisesSection />}
-        {active === 'diary' && <DiarySection />}
-        {active === 'profile' && <ProfileSection />}
+        {active === 'about' && <AboutSection />}
       </main>
 
       {/* Mobile nav */}

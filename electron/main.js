@@ -23,7 +23,7 @@ function createWindow() {
     },
     autoHideMenuBar: true,
     frame: true,
-    icon: path.join(__dirname, '../public/favicon.svg'),
+    icon: path.join(__dirname, '../public/icon.png'),
   });
 
   if (isDev) {

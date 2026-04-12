@@ -42,8 +42,8 @@ export default function ExercisesSection() {
                 style={{ background: 'hsl(240, 18%, 9%)', borderColor: 'hsl(240, 15%, 18%)' }}
               >
                 <div className="flex items-start gap-4">
-                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: `${ex.color}20` }}>
-                    <Icon name={ex.icon as 'Wind' | 'Mic' | 'MessageCircle' | 'Radio' | 'HeartPulse' | 'Stethoscope'} size={22} style={{ color: ex.color }} />
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0" style={{ background: ex.color.replace(')', ', 0.15)').replace('hsl(', 'hsla(') }}>
+                    <Icon name={ex.icon} fallback="Star" size={22} style={{ color: ex.color }} />
                   </div>
                   <div className="flex-1">
                     <h3 className="font-display text-xl font-medium mb-1" style={{ color: 'hsl(45, 20%, 88%)' }}>{ex.title}</h3>

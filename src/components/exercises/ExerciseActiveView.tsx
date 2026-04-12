@@ -28,8 +28,8 @@ export default function ExerciseActiveView({
       <div className="rounded-3xl border p-8" style={{ background: 'hsl(240, 18%, 9%)', borderColor: 'hsl(240, 15%, 18%)' }}>
         {/* Header */}
         <div className="flex items-center gap-4 mb-8">
-          <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: `${activeEx.color}20` }}>
-            <Icon name={activeEx.icon as 'Wind' | 'Mic' | 'MessageCircle' | 'Radio' | 'HeartPulse' | 'Stethoscope'} size={26} style={{ color: activeEx.color }} />
+          <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ background: activeEx.color.replace(')', ', 0.15)').replace('hsl(', 'hsla(') }}>
+            <Icon name={activeEx.icon} fallback="Star" size={26} style={{ color: activeEx.color }} />
           </div>
           <div>
             <h3 className="font-display text-3xl font-light" style={{ color: 'hsl(45, 30%, 90%)' }}>{activeEx.title}</h3>
